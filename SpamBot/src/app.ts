@@ -7,6 +7,8 @@ export function createApp() {
     
     // Add event listeners after DOM is rendered
     setTimeout(() => {
+      console.log('Initializing app and attaching event listeners...')
+      
       const sendBtn = document.getElementById('send-btn')
       const messageInput = document.getElementById('message-input') as HTMLTextAreaElement
       const mobileMenuBtn = document.getElementById('mobile-menu-btn')
@@ -15,37 +17,74 @@ export function createApp() {
       const sidebarOverlay = document.getElementById('sidebar-overlay')
       const newChatBtn = document.getElementById('new-chat-btn')
       
+      console.log('DOM Elements found:', {
+        mobileMenuBtn: !!mobileMenuBtn,
+        closeSidebar: !!closeSidebar,
+        sidebar: !!sidebar,
+        sidebarOverlay: !!sidebarOverlay,
+        newChatBtn: !!newChatBtn
+      })
+      
       // Cache DOM elements for better performance
       const messagesContainer = document.getElementById('messages-container')
       const messagesParent = messagesContainer?.parentElement
       
       // Mobile menu functionality
       const toggleSidebar = () => {
+        console.log('toggleSidebar called, current state:', {
+          sidebar: !!sidebar,
+          sidebarOverlay: !!sidebarOverlay,
+          sidebarHidden: sidebar?.classList.contains('-translate-x-full')
+        })
+        
         if (sidebar && sidebarOverlay) {
           const isHidden = sidebar.classList.contains('-translate-x-full')
+          console.log('Sidebar is currently:', isHidden ? 'hidden' : 'visible')
           
           if (isHidden) {
+            console.log('Showing sidebar...')
             sidebar.classList.remove('-translate-x-full')
             sidebarOverlay.classList.remove('hidden')
             sidebarOverlay.classList.add('active')
           } else {
+            console.log('Hiding sidebar...')
             sidebar.classList.add('-translate-x-full')
             sidebarOverlay.classList.add('hidden')
             sidebarOverlay.classList.remove('active')
           }
+        } else {
+          console.error('Cannot toggle sidebar - elements not found')
         }
       }
       
       if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', toggleSidebar)
+        mobileMenuBtn.addEventListener('click', () => {
+          console.log('Mobile menu button clicked')
+          toggleSidebar()
+        })
+        console.log('Mobile menu event listener attached')
+      } else {
+        console.error('Mobile menu button not found!')
       }
       
       if (closeSidebar) {
-        closeSidebar.addEventListener('click', toggleSidebar)
+        closeSidebar.addEventListener('click', () => {
+          console.log('Close sidebar button clicked')
+          toggleSidebar()
+        })
+        console.log('Close sidebar event listener attached')
+      } else {
+        console.error('Close sidebar button not found!')
       }
       
       if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', toggleSidebar)
+        sidebarOverlay.addEventListener('click', () => {
+          console.log('Sidebar overlay clicked')
+          toggleSidebar()
+        })
+        console.log('Sidebar overlay event listener attached')
+      } else {
+        console.error('Sidebar overlay not found!')
       }
       
       // Send message functionality
@@ -175,6 +214,53 @@ export function createApp() {
           }
         })
       }
+      
+      // Add click event listeners to sidebar items
+      const sidebarItems = document.querySelectorAll('#sidebar .space-y-2 > div')
+      console.log('Found sidebar items:', sidebarItems.length)
+      
+      sidebarItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+          console.log(`Sidebar item ${index + 1} clicked`)
+          
+          // Remove active class from all items
+          sidebarItems.forEach(i => {
+            i.classList.remove('bg-gray-700')
+            const dot = i.querySelector('.w-2.h-2')
+            const text = i.querySelector('span')
+            if (dot) {
+              dot.classList.remove('bg-blue-500')
+              dot.classList.add('bg-gray-500')
+            }
+            if (text) {
+              text.classList.remove('text-gray-200')
+              text.classList.add('text-gray-400')
+            }
+          })
+          
+          // Add active class to clicked item
+          item.classList.add('bg-gray-700')
+          const dot = item.querySelector('.w-2.h-2')
+          const text = item.querySelector('span')
+          if (dot) {
+            dot.classList.remove('bg-gray-500')
+            dot.classList.add('bg-blue-500')
+          }
+          if (text) {
+            text.classList.remove('text-gray-400')
+            text.classList.add('text-gray-200')
+          }
+          
+          // Close sidebar on mobile after selection
+          if (window.innerWidth < 768) {
+            console.log('Closing sidebar on mobile after selection')
+            toggleSidebar()
+          }
+          
+          // Here you could add functionality to load different chat content
+          // based on which sidebar item was clicked
+        })
+      })
       
       // Auto-resize textarea
       const autoResize = () => {

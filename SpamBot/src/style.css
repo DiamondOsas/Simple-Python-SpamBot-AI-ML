@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Custom animations and performance optimizations */
 @keyframes fade-in {
   from {
@@ -10,10 +14,6 @@
   }
 }
 
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out;
-}
-
 /* Performance optimizations */
 * {
   box-sizing: border-box;
@@ -22,13 +22,6 @@
 /* Smooth scrolling for the entire app */
 html {
   scroll-behavior: smooth;
-}
-
-/* Optimize rendering for mobile devices */
-@media (max-width: 768px) {
-  .chat-container {
-    -webkit-overflow-scrolling: touch;
-  }
 }
 
 /* Reduce motion for users who prefer it */
@@ -83,13 +76,13 @@ html {
 }
 
 /* Hardware acceleration for smooth animations */
-.animate-fade-in, .hover\:scale-105 {
+.hover\:scale-105 {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
 }
 
-/* Sidebar specific styles */
+/* Sidebar specific styles (fallbacks for mobile) */
 .sidebar-mobile {
   position: fixed;
   top: 0;
