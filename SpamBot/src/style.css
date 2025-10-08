@@ -88,3 +88,46 @@ html {
   backface-visibility: hidden;
   perspective: 1000px;
 }
+
+/* Sidebar specific styles */
+.sidebar-mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 16rem;
+  background: linear-gradient(to bottom, #1f2937, #111827);
+  z-index: 40;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar-mobile.open {
+  transform: translateX(0);
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 30;
+  display: none;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+/* Ensure sidebar works on all screen sizes */
+@media (min-width: 768px) {
+  .sidebar-mobile {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay {
+    display: none !important;
+  }
+}

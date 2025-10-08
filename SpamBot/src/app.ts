@@ -22,8 +22,17 @@ export function createApp() {
       // Mobile menu functionality
       const toggleSidebar = () => {
         if (sidebar && sidebarOverlay) {
-          sidebar.classList.toggle('-translate-x-full')
-          sidebarOverlay.classList.toggle('hidden')
+          const isHidden = sidebar.classList.contains('-translate-x-full')
+          
+          if (isHidden) {
+            sidebar.classList.remove('-translate-x-full')
+            sidebarOverlay.classList.remove('hidden')
+            sidebarOverlay.classList.add('active')
+          } else {
+            sidebar.classList.add('-translate-x-full')
+            sidebarOverlay.classList.add('hidden')
+            sidebarOverlay.classList.remove('active')
+          }
         }
       }
       
