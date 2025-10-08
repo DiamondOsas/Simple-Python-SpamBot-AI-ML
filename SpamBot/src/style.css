@@ -1,1 +1,90 @@
-/* This file will be empty since we're using Tailwind via CDN */
+/* Custom animations and performance optimizations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+/* Smooth scrolling for the entire app */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize rendering for mobile devices */
+@media (max-width: 768px) {
+  .chat-container {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Message input optimizations */
+#message-input {
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  .mobile-optimized {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  /* Prevent zoom on focus */
+  #message-input:focus {
+    font-size: 16px;
+  }
+}
+
+/* Performance: Use will-change for animated elements */
+#send-btn, .message-bubble {
+  will-change: transform;
+}
+
+/* Hardware acceleration for smooth animations */
+.animate-fade-in, .hover\:scale-105 {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

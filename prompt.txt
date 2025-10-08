@@ -1,2 +1,1 @@
-I want to crete a website exactly like this chatgpt.com lease do it 
-Use tailwind online as css 
+The main purpose of this application chck wheter certian messages are spm or not so put that and remove all those assistant and make sure it si clear to the ser that it is for spam 
