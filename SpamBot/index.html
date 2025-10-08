@@ -33,9 +33,60 @@
         }
       }
     </script>
+    
+    <!-- Fallback styles in case Tailwind fails to load -->
+    <style>
+      .bg-gray-900 { background-color: #111827; }
+      .text-white { color: #ffffff; }
+      .overflow-hidden { overflow: hidden; }
+      .h-screen { height: 100vh; }
+      
+      /* Basic layout styles as fallback */
+      .flex { display: flex; }
+      .flex-col { flex-direction: column; }
+      .fixed { position: fixed; }
+      .inset-y-0 { top: 0; bottom: 0; }
+      .left-0 { left: 0; }
+      .z-40 { z-index: 40; }
+      .w-64 { width: 16rem; }
+      .h-full { height: 100%; }
+      .transform { transform: translateZ(0); }
+      .border-r { border-right-width: 1px; }
+      .border-gray-700 { border-color: #374151; }
+      .translate-x-full { transform: translateX(100%); }
+      .-translate-x-full { transform: translateX(-100%); }
+      .transition-transform { transition-property: transform; }
+      .duration-300 { transition-duration: 300ms; }
+      .ease-in-out { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+      .relative { position: relative; }
+      .md\\:translate-x-0 { /* Mobile first: no transform on mobile */ }
+      @media (min-width: 768px) { 
+        .md\\:translate-x-0 { transform: translateX(0); } 
+      }
+    </style>
   </head>
   <body class="bg-gray-900 text-white overflow-hidden">
-    <div id="app" class="h-screen"></div>
+    <div id="app" class="h-screen flex">
+      <!-- Loading indicator in case of initialization issues -->
+      <div id="loading" class="flex-1 flex items-center justify-center">
+        <div class="text-center">
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+          <p class="text-gray-400">Loading SpamBot...</p>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
+    
+    <script>
+      // Remove loading indicator after app is initialized
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          const loadingEl = document.getElementById('loading');
+          if (loadingEl) {
+            loadingEl.style.display = 'none';
+          }
+        }, 1000);
+      });
+    </script>
   </body>
 </html>
