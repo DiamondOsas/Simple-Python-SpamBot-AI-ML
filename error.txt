@@ -1,2 +1,5 @@
 NOTE: FOLLOW THESE INSTRUCTIONS
+Please always reaserch online to have better wahys ot soleve the problems
 
+Task
+In the local the tailwindcss  is working but when i hosted it on vercel it deosnt show at all please fix 
