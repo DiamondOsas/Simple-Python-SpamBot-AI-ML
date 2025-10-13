@@ -1,1 +1,12 @@
-The main purpose of this application chck wheter certian messages are spm or not so put that and remove all those assistant and make sure it si clear to the ser that it is for spam 
+Contraits
+
+Code as minimal as psossible
+If you need more context please ask
+Use tailwind css 
+
+
+Task 
+Create a page like chatgpt.com like a website to chat in @index.html 
+
+
+

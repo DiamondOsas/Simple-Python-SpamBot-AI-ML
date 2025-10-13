@@ -1,24 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./index.html",
-    "./src/**/*.{ts,js}",
-    "./src/components/**/*.{ts,js}",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  theme: {
-    extend: {
-      animation: {
-        'bounce': 'bounce 1s infinite',
-        'fade-in': 'fade-in 0.3s ease-out',
-      },
-      keyframes: {
-        'fade-in': {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        }
-      }
-    }
-  },
+  theme: { extend: {}, },
   plugins: [],
 }
-
