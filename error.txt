@@ -1,5 +1,6 @@
 NOTE: FOLLOW THESE INSTRUCTIONS
-Please always reaserch online to have better wahys ot soleve the problems
-
+Please always reaserch online  or webfetch  to reaserch before fixing problems
+Tell me if you need any oyhter info beofore proceeeidng 
 Task
-In the local the tailwindcss  is working but when i hosted it on vercel it deosnt show at all please fix 
+In the local the tailwindcss it is not showing css in the webiste  is not working  and when i hosted it on vercel it deosnt show at all please fix 
+
