@@ -1,4 +1,4 @@
-# main.py
+# main.py requirements
 import os
 import zipfile
 import logging
