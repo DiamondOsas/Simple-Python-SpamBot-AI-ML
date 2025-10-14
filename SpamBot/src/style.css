@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .info-box {
+    @apply bg-[#40414F] p-4 rounded-lg text-sm space-y-2 w-64;
+  }
+}

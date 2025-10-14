@@ -7,24 +7,87 @@
     <title>spambot</title>
     <link rel="stylesheet" href="/src/style.css" />
   </head>
-  <body class="bg-gray-800 text-white">
-    <div id="app" class="flex flex-col h-screen">
+  <body class="bg-[#343541] text-white">
+    <div id="app" class="relative flex h-screen">
+      <!-- Open sidebar button -->
+      <button id="open-sidebar-button" class="fixed top-2 left-2 z-20 p-2 rounded-md hover:bg-gray-700 hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
 
-      <!-- Chat messages area -->
-      <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
-        <!-- Messages will be added here dynamically -->
+      <!-- Sidebar -->
+      <div id="sidebar" class="bg-[#202123] w-64 p-2 flex flex-col transition-all duration-300 ease-in-out">
+        <div class="flex-1 overflow-y-auto">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <button id="new-chat-button" class="flex-1 border border-gray-600 rounded-lg p-3 text-left flex items-center space-x-3 hover:bg-gray-700/50 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+              <span>New Chat</span>
+            </button>
+            <button id="close-sidebar-button" class="p-3 border border-gray-600 rounded-lg hover:bg-gray-700/50 transition-colors duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+            </button>
+          </div>
+          <div class="mt-4 space-y-2">
+            <!-- Placeholder for chat history -->
+            
+          </div>
+        </div>
+        <div class="border-t border-gray-600 p-2">
+          <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700/70">
+            <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center font-bold">U</div>
+            <span>User</span>
+          </a>
+        </div>
       </div>
 
-      <!-- Input area -->
-      <div class="p-4 bg-gray-900/50">
-        <form id="chat-form" class="max-w-3xl mx-auto flex items-center rounded-lg border border-gray-600 bg-gray-700 p-2">
-          <input id="chat-input" type="text" class="flex-1 bg-transparent px-2 focus:outline-none" placeholder="Send a message...">
-          <button type="submit" class="p-2 text-gray-400 hover:text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.126A59.768 59.768 0 0 1 21.485 12 59.77 59.77 0 0 1 3.27 20.876L5.999 12zm0 0h7.5" />
-            </svg>
-          </button>
-        </form>
+      <!-- Main Content -->
+      <div class="flex-1 flex flex-col">
+        <!-- Chat messages area -->
+        <div class="flex-1 overflow-y-auto relative">
+          <!-- Welcome Screen -->
+          <div id="welcome-screen" class="h-full flex flex-col items-center justify-center text-center p-4">
+            <h1 class="text-3xl md:text-5xl font-bold mb-6 md:mb-8">SpamBot Demo</h1>
+            <div class="flex flex-col md:flex-row gap-4 md:gap-4">
+              <!-- Example Prompts -->
+              <div class="info-box">
+                <h2 class="text-lg font-semibold">Examples</h2>
+                <p>"Explain quantum computing in simple terms"</p>
+                <p>"Got any creative ideas for a 10 year old's birthday?"</p>
+              </div>
+              <div class="info-box">
+                <h2 class="text-lg font-semibold">Capabilities</h2>
+                <p>Remembers what user said earlier in the conversation</p>
+                <p>Allows user to provide follow-up corrections</p>
+              </div>
+              <div class="info-box">
+                <h2 class="text-lg font-semibold">Limitations</h2>
+                <p>May occasionally generate incorrect information</p>
+                <p>May occasionally produce harmful instructions</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Messages -->
+          <div id="chat-messages" class="space-y-2">
+            <!-- Messages will be added here dynamically -->
+          </div>
+        </div>
+
+        <!-- Input area -->
+        <div class="p-4 w-full max-w-3xl mx-auto">
+          <form id="chat-form" class="relative">
+            <textarea id="chat-input" class="w-full bg-[#40414F] border-0 rounded-lg p-4 pr-12 resize-none focus:ring-0 focus:outline-none" placeholder="Send a message..." rows="1"></textarea>
+            <button type="submit" class="absolute bottom-3 right-3 p-2 rounded-md text-gray-400 hover:bg-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.126A59.768 59.768 0 0 1 21.485 12 59.77 59.77 0 0 1 3.27 20.876L5.999 12zm0 0h7.5" />
+              </svg>
+            </button>
+          </form>
+          <p class="text-xs text-center text-gray-400 mt-2">
+            SpamBot Demo. This is a minimal clone for demonstration purposes.
+          </p>
+        </div>
       </div>
     </div>
     <script type="module" src="/src/main.js"></script>

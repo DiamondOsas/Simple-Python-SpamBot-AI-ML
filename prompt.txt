@@ -3,10 +3,11 @@ Contraits
 Code as minimal as psossible
 If you need more context please ask
 Use tailwind css 
-
+Look at the files needed
 
 Task 
-Create a page like chatgpt.com like a website to chat in @index.html 
+
+I should be able to tpe messages press enter and just get a mock respone and the side bar should close after a min with like less that700px 
 
 
 
