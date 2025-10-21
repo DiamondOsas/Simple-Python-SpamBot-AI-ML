@@ -4,6 +4,79 @@
 
 @layer components {
   .info-box {
-    @apply bg-[#40414F] p-4 rounded-lg text-sm space-y-2 w-64;
+    @apply bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700;
+  }
+
+  .chat-message {
+    @apply p-4 text-gray-800 dark:text-white;
+  }
+
+  .chat-message.user {
+    @apply bg-gray-100 dark:bg-gray-700/50;
+  }
+
+  .welcome-animation-container h1 span {
+    @apply bg-clip-text text-transparent bg-gradient-to-b from-indigo-500 to-indigo-500 dark:from-indigo-400 dark:to-indigo-400;
+    background-size: 100% 200%;
+    background-position: 0 0;
+    animation: text-fill 1.5s ease-out 0.5s forwards;
+  }
+
+  @keyframes text-fill {
+    to {
+      background-position: 0 100%;
+    }
+  }
+  
+  .welcome-animation-container p {
+    @apply overflow-hidden whitespace-nowrap;
+    opacity: 0;
+    animation: typing-p 2s steps(44, end) 2s forwards;
+    width: 0;
+  }
+}
+
+@keyframes typing-p {
+  from {
+    width: 0;
+    opacity: 1;
+  }
+  to {
+    width: 44ch; /* 44 characters for the paragraph */
+    opacity: 1;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .info-box {
+    @apply p-4;
   }
 }

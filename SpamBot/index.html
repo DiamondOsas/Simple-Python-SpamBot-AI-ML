@@ -4,92 +4,208 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spambot</title>
+    <title>SpamBot Dashboard</title>
     <link rel="stylesheet" href="/src/style.css" />
+    <script>
+      // Prevents FOUC (Flash of Unstyled Content) for dark mode
+      if (
+        localStorage.getItem('theme') === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
-  <body class="bg-[#343541] text-white">
-    <div id="app" class="relative flex h-screen">
-      <!-- Open sidebar button -->
-      <button id="open-sidebar-button" class="fixed top-2 left-2 z-20 p-2 rounded-md hover:bg-gray-700 hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
-      </button>
-
+  <body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+    <div class="flex h-screen overflow-hidden">
       <!-- Sidebar -->
-      <div id="sidebar" class="bg-[#202123] w-64 p-2 flex flex-col transition-all duration-300 ease-in-out">
-        <div class="flex-1 overflow-y-auto">
-          <div class="flex items-center justify-between gap-2 mb-2">
-            <button id="new-chat-button" class="flex-1 border border-gray-600 rounded-lg p-3 text-left flex items-center space-x-3 hover:bg-gray-700/50 transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-              <span>New Chat</span>
-            </button>
-            <button id="close-sidebar-button" class="p-3 border border-gray-600 rounded-lg hover:bg-gray-700/50 transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
-            </button>
-          </div>
-          <div class="mt-4 space-y-2">
-            <!-- Placeholder for chat history -->
-            
+      <div id="sidebar" class="hidden md:flex md:w-64 lg:w-72 flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 pt-6 pb-4 px-4 transition-all duration-300 ease-in-out">
+        <div class="mb-8 px-2">
+          <h1 class="text-2xl font-bold text-indigo-600 flex items-center">
+            <span class="bg-indigo-600 text-white p-2 rounded mr-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09L9.813 15.904Zm0 0L12 18.75l2.187-2.846a4.5 4.5 0 0 0 3.09-3.09L20.25 12l-2.846-.813a4.5 4.5 0 0 0-3.09-3.09L12 5.25l-2.187 2.846a4.5 4.5 0 0 0-3.09 3.09L9.813 15.904Zm0 0L12 18.75l2.187-2.846a4.5 4.5 0 0 0 3.09-3.09L20.25 12l-2.846-.813a4.5 4.5 0 0 0-3.09-3.09L12 5.25l-2.187 2.846a4.5 4.5 0 0 0-3.09 3.09L9.813 15.904Z" />
+              </svg>
+            </span>
+            SpamBot
+          </h1>
+        </div>
+        
+        <div class="px-2">
+          <button id="new-chat-button" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg flex items-center justify-center mb-6 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            New Chat
+          </button>
+          
+          <div class="mb-6">
+            <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 px-2">Recent Chats</h3>
+            <ul id="chat-history" class="space-y-1">
+              <li><a href="#" class="flex items-center p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Travel planning for summer</a></li>
+              <li><a href="#" class="flex items-center p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Project idea discussion</a></li>
+              <li><a href="#" class="flex items-center p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Recipe recommendations</a></li>
+            </ul>
           </div>
         </div>
-        <div class="border-t border-gray-600 p-2">
-          <a href="#" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700/70">
-            <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center font-bold">U</div>
-            <span>User</span>
-          </a>
+        
+        <div class="mt-auto px-2">
+          <div class="flex items-center p-3 bg-gray-100 dark:bg-gray-700/50 rounded-lg">
+            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold mr-3">U</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium truncate text-gray-800 dark:text-gray-200">User Name</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 truncate">user@example.com</p>
+            </div>
+            <button id="close-sidebar-button" class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden fixed top-4 left-4 z-10">
+        <button id="open-sidebar-button" class="p-2 bg-indigo-600 text-white rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
       </div>
 
       <!-- Main Content -->
-      <div class="flex-1 flex flex-col">
-        <!-- Chat messages area -->
-        <div class="flex-1 overflow-y-auto relative">
-          <!-- Welcome Screen -->
-          <div id="welcome-screen" class="h-full flex flex-col items-center justify-center text-center p-4">
-            <h1 class="text-3xl md:text-5xl font-bold mb-6 md:mb-8">SpamBot Demo</h1>
-            <div class="flex flex-col md:flex-row gap-4 md:gap-4">
-              <!-- Example Prompts -->
-              <div class="info-box">
-                <h2 class="text-lg font-semibold">Examples</h2>
-                <p>"Explain quantum computing in simple terms"</p>
-                <p>"Got any creative ideas for a 10 year old's birthday?"</p>
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-6 flex items-center justify-between">
+          <div class="flex items-center">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Dashboard</h2>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button id="theme-toggle" class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+              <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+              </svg>
+            </button>
+            <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">U</div>
+          </div>
+        </header>
+
+        <!-- Chat Area -->
+        <div class="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-900">
+          <div class="max-w-4xl mx-auto">
+            <!-- Welcome Section -->
+            <div id="welcome-screen" class="mb-12 text-center py-12">
+              <div class="welcome-animation-container">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4"><span>SpamBot AI</span></h1>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">Easily Check Whether Messages are Spam or Not</p>
               </div>
-              <div class="info-box">
-                <h2 class="text-lg font-semibold">Capabilities</h2>
-                <p>Remembers what user said earlier in the conversation</p>
-                <p>Allows user to provide follow-up corrections</p>
-              </div>
-              <div class="info-box">
-                <h2 class="text-lg font-semibold">Limitations</h2>
-                <p>May occasionally generate incorrect information</p>
-                <p>May occasionally produce harmful instructions</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="info-box">
+                  <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-4 mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                    </svg>
+                  </div>
+                  <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-white">Examples</h3>
+                  <ul class="text-gray-600 dark:text-gray-400 space-y-2 text-left text-sm">
+                    <li class="flex items-start">
+                      <span class="text-indigo-500 dark:text-indigo-400 mr-2 mt-1">•</span>
+                      "Explain quantum computing in simple terms"
+                    </li>
+                    <li class="flex items-start">
+                      <span class="text-indigo-500 dark:text-indigo-400 mr-2 mt-1">•</span>
+                      "Got any creative ideas for a 10 year old's birthday?"
+                    </li>
+                  </ul>
+                </div>
+                <div class="info-box">
+                  <div class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4 mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5 10.5 3.75H9.75a3 3 0 0 0-3 3v.75c0 1.213.518 2.31 1.364 3.087l.3.24c.5.4.867 1.002.986 1.67a3 3 0 0 1-.184 2.285 1.5 1.5 0 0 1-.444 1.002l-.017.017-.3 2.1a1.5 1.5 0 0 1-1.16.986 3 3 0 0 1-2.285-.184 1.5 1.5 0 0 0-2.122-.424l-.01.007a3 3 0 0 1-3.63-3.63l.007-.01c.26-.86.78-1.56 1.48-2.018l.3-.24A3 3 0 0 1 3.75 13.5Z" />
+                    </svg>
+                  </div>
+                  <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-white">Capabilities</h3>
+                  <ul class="text-gray-600 dark:text-gray-400 space-y-2 text-left text-sm">
+                    <li class="flex items-start">
+                      <span class="text-emerald-500 dark:text-emerald-400 mr-2 mt-1">•</span>
+                      Remembers what user said earlier in the conversation
+                    </li>
+                    <li class="flex items-start">
+                      <span class="text-emerald-500 dark:text-emerald-400 mr-2 mt-1">•</span>
+                      Allows user to provide follow-up corrections
+                    </li>
+                  </ul>
+                </div>
+                <div class="info-box">
+                  <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/50 flex items-center justify-center text-rose-600 dark:text-rose-400 mb-4 mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                    </svg>
+                  </div>
+                  <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-white">Limitations</h3>
+                  <ul class="text-gray-600 dark:text-gray-400 space-y-2 text-left text-sm">
+                    <li class="flex items-start">
+                      <span class="text-rose-500 dark:text-rose-400 mr-2 mt-1">•</span>
+                      May occasionally generate incorrect information
+                    </li>
+                    <li class="flex items-start">
+                      <span class="text-rose-500 dark:text-rose-400 mr-2 mt-1">•</span>
+                      May occasionally produce harmful instructions or biased content
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Chat Messages -->
-          <div id="chat-messages" class="space-y-2">
-            <!-- Messages will be added here dynamically -->
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="space-y-6 mb-24">
+              <!-- Messages will be added here dynamically -->
+            </div>
           </div>
         </div>
 
-        <!-- Input area -->
-        <div class="p-4 w-full max-w-3xl mx-auto">
-          <form id="chat-form" class="relative">
-            <textarea id="chat-input" class="w-full bg-[#40414F] border-0 rounded-lg p-4 pr-12 resize-none focus:ring-0 focus:outline-none" placeholder="Send a message..." rows="1"></textarea>
-            <button type="submit" class="absolute bottom-3 right-3 p-2 rounded-md text-gray-400 hover:bg-gray-600">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.126A59.768 59.768 0 0 1 21.485 12 59.77 59.77 0 0 1 3.27 20.876L5.999 12zm0 0h7.5" />
-              </svg>
-            </button>
-          </form>
-          <p class="text-xs text-center text-gray-400 mt-2">
-            SpamBot Demo. This is a minimal clone for demonstration purposes.
-          </p>
+        <!-- Input Area -->
+        <div class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4">
+          <div class="max-w-4xl mx-auto">
+            <form id="chat-form" class="relative">
+              <div class="flex">
+                <textarea 
+                  id="chat-input" 
+                  class="flex-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400" 
+                  placeholder="Type your message here..." 
+                  rows="1"
+                ></textarea>
+                <button 
+                  type="submit" 
+                  class="bg-indigo-600 text-white px-6 rounded-r-lg hover:bg-indigo-700 transition-colors flex items-center"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.126A59.768 59.768 0 0 1 21.485 12 59.77 59.77 0 0 1 3.27 20.876L5.999 12zm0 0h7.5" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+            <p class="text-xs text-center text-gray-500 dark:text-gray-400 mt-2">
+              SpamBot Demo. This is a minimal clone for demonstration purposes.
+            </p>
+          </div>
         </div>
       </div>
     </div>
+
+    <template id="chat-message-template">
+      <div class="chat-message">
+        <div class="flex items-start gap-4 max-w-3xl mx-auto">
+          <div class="avatar w-8 h-8 rounded-sm flex items-center justify-center font-bold text-sm text-white"></div>
+          <div class="message-content flex-1">
+            <p></p>
+          </div>
+        </div>
+      </div>
+    </template>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

@@ -16,9 +16,22 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # -----------------------------
+# Ngrok Integration
+# -----------------------------
+import asyncio
+import subprocess
+import threading
+import time
+import urllib.request
+import json
+
+# -----------------------------
 # App Initialization
 # -----------------------------
 app = FastAPI(title="Spam Detection API")
+
+# Global variable to store ngrok URL
+ngrok_url = None
 
 # -----------------------------
 # Model Download & Extraction
@@ -26,7 +39,8 @@ app = FastAPI(title="Spam Detection API")
 MODEL_ZIP_URL = 'https://drive.google.com/uc?id=1bXPUvtlf_NO-Yx_8AT5l06dTaN8_z6l5'
 MODEL_DIR = "model"
 MODEL_H5_FILE = os.path.join(MODEL_DIR, "spam_transformer_model.h5")  # adjust if inside folder
-TOKENIZER_DIR = os.path.join(MODEL_DIR, "spam_transformer_model")      # if tokenizer saved
+TOKENIZER_DIR = os.path.join(MODEL_DIR, "spam_transformer_model")    
+  # if tokenizer saved
 
 def download_and_extract_model():
     if not os.path.exists(MODEL_DIR):
@@ -114,3 +128,42 @@ async def predict(request: Request):
     except Exception as e:
         logger.error(f"Error processing request: {e}")
         raise HTTPException(status_code=400, detail=str(e))
+
+# -----------------------------
+# Ngrok Setup Function
+# -----------------------------
+def setup_ngrok():
+    global ngrok_url
+    try:
+        # Start ngrok process
+        ngrok_process = subprocess.Popen(['ngrok', 'http', '8000'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        
+        # Wait a moment for ngrok to start
+        time.sleep(3)
+        
+        # Get the public URL from ngrok API
+        with urllib.request.urlopen('http://localhost:4040/api/tunnels') as response:
+            data = json.loads(response.read().decode())
+            ngrok_url = data['tunnels'][0]['public_url']
+            
+        print(f"Ngrok URL: {ngrok_url}")
+        return ngrok_process
+    except Exception as e:
+        print(f"Failed to start ngrok: {e}")
+        return None
+
+# -----------------------------
+# Main Execution
+# -----------------------------
+if __name__ == "__main__":
+    import uvicorn
+    
+    # Setup ngrok in a separate thread
+    ngrok_process = setup_ngrok()
+    
+    # Start the FastAPI server
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+    
+    # Clean up ngrok process when done
+    if ngrok_process:
+        ngrok_process.terminate()

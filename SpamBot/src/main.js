@@ -1,4 +1,4 @@
-  const chatForm = document.getElementById('chat-form');
+const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
 const chatMessages = document.getElementById('chat-messages');
 const welcomeScreen = document.getElementById('welcome-screen');
@@ -6,29 +6,24 @@ const newChatButton = document.getElementById('new-chat-button');
 const sidebar = document.getElementById('sidebar');
 const openSidebarButton = document.getElementById('open-sidebar-button');
 const closeSidebarButton = document.getElementById('close-sidebar-button');
+const themeToggle = document.getElementById('theme-toggle');
+const chatMessageTemplate = document.getElementById('chat-message-template');
 
 const createChatMessageElement = (message, isUser) => {
-  const wrapper = document.createElement('div');
-  wrapper.classList.add('p-4', 'text-white', isUser ? 'bg-[#343541]' : 'bg-[#444654]');
+  const messageElement = chatMessageTemplate.content.cloneNode(true);
+  const messageWrapper = messageElement.querySelector('.chat-message');
+  const avatar = messageElement.querySelector('.avatar');
+  const messageParagraph = messageElement.querySelector('p');
 
-  const messageElement = document.createElement('div');
-  messageElement.classList.add('flex', 'items-start', 'gap-4', 'max-w-3xl', 'mx-auto');
+  if (isUser) {
+    messageWrapper.classList.add('user');
+  }
 
-  const avatar = document.createElement('div');
-  avatar.classList.add('w-8', 'h-8', 'rounded-sm', 'flex', 'items-center', 'justify-center', 'font-bold', 'text-sm');
   avatar.textContent = isUser ? 'U' : 'S';
   avatar.classList.add(isUser ? 'bg-indigo-600' : 'bg-emerald-600');
-
-  const messageContent = document.createElement('div');
-  const messageParagraph = document.createElement('p');
   messageParagraph.textContent = message;
-  messageContent.appendChild(messageParagraph);
 
-  messageElement.appendChild(avatar);
-  messageElement.appendChild(messageContent);
-
-  wrapper.appendChild(messageElement);
-  return wrapper;
+  return messageElement;
 };
 
 const addMessageToChat = (message, isUser) => {
@@ -49,20 +44,12 @@ const clearChat = () => {
 
 newChatButton.addEventListener('click', clearChat);
 
-// Fixed the toggleSidebar function
 const toggleSidebar = () => {
-  if (sidebar.classList.contains('w-64')) {
-    // Close sidebar
-    sidebar.classList.remove('w-64', 'p-2');
-    sidebar.classList.add('w-0', 'p-0', 'overflow-hidden');
-    openSidebarButton.classList.remove('hidden');
-  } else {
-    // Open sidebar
-    sidebar.classList.remove('w-0', 'p-0', 'overflow-hidden');
-    sidebar.classList.add('w-64', 'p-2');
-    openSidebarButton.classList.add('hidden');
-  }
+  sidebar.classList.toggle('hidden');
+  sidebar.classList.toggle('w-0');
+  sidebar.classList.toggle('md:w-64');
 };
+
 
 // Added window resize listener to auto-close sidebar when width < 700px
 window.addEventListener('resize', () => {
@@ -103,3 +90,19 @@ chatInput.addEventListener('keydown', (e) => {
 
 openSidebarButton.addEventListener('click', toggleSidebar);
 closeSidebarButton.addEventListener('click', toggleSidebar);
+
+// Dark mode toggle functionality
+const setDarkMode = (isDark) => {
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('theme', 'light');
+  }
+};
+
+themeToggle.addEventListener('click', () => {
+  const isCurrentlyDark = document.documentElement.classList.contains('dark');
+  setDarkMode(!isCurrentlyDark);
+});
